@@ -36,8 +36,8 @@ while True:
     hour = now_time.hour
     if hour>12: hour = hour - 12
     minute = now_time.minute
-    second = now_time.second
-
+    second = now_time.second + now_time.microsecond / 1000000.0
+    
     # Calculate end points of hour, minute, second
 
     hour_vector = clock_hand_vector(hour/12*2*np.pi, hour_hand_length)

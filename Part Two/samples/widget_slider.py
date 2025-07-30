@@ -12,26 +12,30 @@ from matplotlib.widgets import Slider, RadioButtons
 fig, ax = plt.subplots()
 plt.subplots_adjust(left=0.25, bottom=0.25)
 t = np.arange(0.0, 1.0, 0.001)
-a0 = 5; f0 = 3; delta_f = 0.1; delta_a = 0.1
-s = a0 * np.sin(2 * np.pi * f0 * t)
+a0 = 5; f0 = 3; delta_f = 0.1; delta_a = 0.1; f1 = 3;
+s = (a0 * np.sin(2 * np.pi * f0 * t)) + (a0 * np.sin(2 * np.pi * f1 * t))
 l, = plt.plot(t, s, lw=2)
 ax.margins(x=0)
 
 # Create two sliders
 axcolor = 'lightgoldenrodyellow'
-axfreq = plt.axes([0.25, 0.1, 0.65, 0.03], facecolor=axcolor)
+axfreq1 = plt.axes([0.25, 0.1, 0.65, 0.03], facecolor=axcolor)
+axfreq2 = plt.axes([0.25, 0.05, 0.65, 0.03], facecolor=axcolor)
 axamp = plt.axes([0.25, 0.15, 0.65, 0.03], facecolor=axcolor)
-sfreq = Slider(axfreq, 'Freq', 0.1, 30.0, valinit=f0, valstep=delta_f)
+sfreq1 = Slider(axfreq1, 'Freq1', 0.1, 30.0, valinit=f0, valstep=delta_f)
+sfreq2 = Slider(axfreq2, 'Freq2', 0.1, 30.0, valinit=f1, valstep=delta_f)
 samp = Slider(axamp, 'Amp', 0.1, 10.0, valinit=a0, valstep=delta_a)
 
 # slider update actions
 def update(val):
     amp = samp.val
-    freq = sfreq.val
-    l.set_ydata(amp*np.sin(2*np.pi*freq*t))
+    freq = sfreq1.val
+    freq2 = sfreq2.val
+    l.set_ydata((amp*np.sin(2*np.pi*freq*t)) + amp*np.sin(2*np.pi*freq2*t))
     fig.canvas.draw_idle()
 
-sfreq.on_changed(update)
+sfreq1.on_changed(update)
+sfreq2.on_changed(update)
 samp.on_changed(update)
 
 # Create a radio button
